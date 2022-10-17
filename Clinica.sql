@@ -2,7 +2,7 @@ CREATE DATABASE Clinica
 GO
 USE Clinica
 
--------------------tabPaciente---------------------
+--tabPaciente--
 CREATE TABLE Paciente (
 Num_Beneficiario		INT			NOT NULL,
 Nome			        VARCHAR (100)		NOT NULL,
@@ -16,7 +16,7 @@ PRIMARY KEY (Num_Beneficiario)
 )
 GO
 
----------------------dadosPaciente---------------------------------------
+--dadosPaciente--
 INSERT INTO Paciente (Num_Beneficiario, Nome, Logradouro, Numero, CEP, Complemento, Telefone)
 VALUES
 (99901, 'Washington Silva', 'R. Anhaia', 150, 02345000, 'Casa', 922229999),
@@ -27,7 +27,7 @@ VALUES
 
 SELECT * FROM Paciente
 
--------------------------------------tabEspecialidade------------------------------------------------
+--tabEspecialidade--
 
 CREATE TABLE Especialidade (
 ID			INT		NOT NULL,
@@ -37,7 +37,7 @@ PRIMARY KEY (ID)
 )
 GO
 
-----------------dadosEspecialidade----------------------------------
+--dadosEspecialidade--
 INSERT INTO Especialidade
 VALUES
 (1, 'Otorrinolaringologista'),
@@ -47,7 +47,7 @@ VALUES
 
 SELECT * FROM Especialidade
 
------------------------------------tabMedico---------------------------------------------------------
+--tabMedico--
 
 CREATE TABLE Medico (
 Codigo			INT				NOT NULL,
@@ -64,7 +64,7 @@ FOREIGN KEY (Especialidade_ID)
 		REFERENCES Especialidade (ID)
 )
 
--------------------dadosMedico--------------------------------
+--dadosMedico--
 INSERT INTO Medico (Codigo, Nome, Logradouro, Numero, CEP, Complemento, Contato, Especialidade_ID)
 VALUES
 (100001, 'Ana Paula', 'R. 7 de Setembro', 256, 03698000, 'Casa', 915689456, 1),
@@ -74,7 +74,7 @@ VALUES
 
 SELECT * FROM Medico
 
----------------------------tabConsulta-------------------------------------------
+--tabConsulta--
 CREATE TABLE Consulta (
 PacienteNum_Beneficiario		INT			NOT NULL,
 Medico_Codigo				INT			NOT NULL,
@@ -90,66 +90,79 @@ FOREIGN KEY (Medico_Codigo)
 
 GO
 
------------------dadosConsulta-------------------------------------------
+--dadosConsulta--
 INSERT INTO Consulta (PacienteNum_Beneficiario, Medico_Codigo, Data_Hora, Observacao)
 VALUES
 (99901, 100002, '2021-09-04 13:20', 'Infecção Urina'),
 (99902, 100003, '2021-09-04 13:15',	'Gripe'),
 (99901, 100001, '2021-09-04 12:20', 'Ingecção Garganta')
 
-------------------------------addDiaAtendimento----------------------------
+--addDiaAtendimento--
 ALTER TABLE Medico
 ADD Dia_Atendimento	VARCHAR (100)		NULL
 
-------------------------------diasAtendimento---------------------------------
+--diasAtendimento--
 UPDATE Medico
 SET Dia_Atendimento = '2° feira'
 WHERE codigo = 100001
+
 --------------------------------------
+
 UPDATE Medico 
 SET Dia_Atendimento = '4° feira'
 WHERE codigo = 100002
+
 ---------------------------------------
+
 UPDATE Medico
 SET Dia_Atendimento = '2° feira'
 WHERE codigo = 100003
+
 ----------------------------------------
+
 UPDATE Medico
 SET Dia_Atendimento = '5° feira'
 WHERE codigo = 100004
 
 select * from Medico
 
---------------excluirEspecialidade--------------------
+--excluirEspecialidade--
 DELETE Especialidade
 WHERE ID = 4
 
 SELECT * FROM Especialidade
+
 ----------------------------------------------------------------------------------------------
 
 ALTER TABLE Medico
 ALTER COLUMN Dia_Atendimento VARCHAR(200) NOT NULL
 
-------------------renameDiasSemanaAtendimento---------------------
+--renameDiasSemanaAtendimento--
 EXEC sp_rename 'dbo.Medico.Dia_Atendimento', 'Dia_Semana_Atendimento', 'column';
 select * from Medico
 
 -------------------------------------------------------------------------------------------------
 
-------atlzrDadosLucas--------------
+--atlzrDadosLucas--
 
 UPDATE Medico
 SET Logradouro = 'Av. Bras Leme'
 WHERE codigo = 100003
+
 ---------------------------------
+
 UPDATE Medico
 SET Numero = 876
 WHERE codigo = 100003
+
 ---------------------------------
+
 UPDATE Medico
 SET CEP = 02122000
 WHERE codigo = 100003
+
 ---------------------------------
+
 UPDATE Medico
 SET Complemento = 'Apto 504'
 WHERE codigo = 100003
